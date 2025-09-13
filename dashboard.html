@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard • SV Realty Solutions</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/script.js"></script>
+</head>
+<body>
+  <div class="navbar">
+    <div class="row container">
+      <div class="logo">Dashboard</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="luckydraw.html">Lucky Draw</a>
+        <a href="#" id="logout">Logout</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="card">
+      <h2 id="greet">Welcome</h2>
+      <p class="small">Manage your entries and view status below.</p>
+    </div>
+
+    <div class="card" id="adminPanel" style="display:none">
+      <h3>All Lucky Draw Entries <span class="badge">Admin</span></h3>
+      <div class="small">Only visible to ADMIN_EMAIL.</div>
+      <table id="allEntries"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Transaction ID</th><th>Date</th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <div class="card">
+      <h3>Your Entries</h3>
+      <table id="myEntries"><thead><tr><th>Transaction ID</th><th>Status</th><th>Date</th></tr></thead><tbody></tbody></table>
+    </div>
+  </main>
+
+<script>
+requireAuth();
+const user = getUser();
+document.getElementById('greet').textContent = 'Welcome, ' + (user?.name||'User');
+
+document.getElementById('logout').addEventListener('click', ()=>{ localStorage.clear(); location.href='login.html'; });
+
+(async function load(){
+  // my entries
+  let r = await api('/api/luckydraw/my');
+  if(r?.data?.entries){
+    const tb = document.querySelector('#myEntries tbody');
+    tb.innerHTML = r.data.entries.map(e=>`<tr><td>${e.transactionId}</td><td>${e.status||'Submitted'}</td><td>${new Date(e.createdAt).toLocaleString()}</td></tr>`).join('');
+  }
+
+  // admin entries
+  r = await api('/api/luckydraw/all');
+  if(r?.res?.ok){
+    document.getElementById('adminPanel').style.display='block';
+    const tb = document.querySelector('#allEntries tbody');
+    tb.innerHTML = r.data.entries.map(e=>`<tr><td>${e.name}</td><td>${e.email}</td><td>${e.phone}</td><td>${e.transactionId}</td><td>${new Date(e.createdAt).toLocaleString()}</td></tr>`).join('');
+  }
+})();
+</script>
+</body>
+</html>

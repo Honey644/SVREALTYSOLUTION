@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login • SV Realty Solutions</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/script.js"></script>
+</head>
+<body class="auth">
+  <div class="card">
+    <h2>Login</h2>
+    <div id="msg"></div>
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" id="email" required>
+      <label>Password</label>
+      <input type="password" id="password" required>
+      <button class="cta" type="submit">Login</button>
+    </form>
+    <p class="small">No account? <a href="register.html">Register</a></p>
+  </div>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const body = {email:email.value, password:password.value};
+  const {res, data} = await api('/api/auth/login',{method:'POST', body:JSON.stringify(body)});
+  if(res.ok){
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    window.location.href='dashboard.html';
+  }else{
+    msg.className='err'; msg.textContent=data.msg||'Login failed';
+  }
+})
+</script>
+</body>
+</html>

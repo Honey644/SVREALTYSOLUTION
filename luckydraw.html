@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lucky Draw • SV Realty Solutions</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/script.js"></script>
+</head>
+<body class="auth">
+  <div class="card" style="max-width:560px">
+    <h2>Lucky Draw Entry</h2>
+    <p class="small">Enter your details and transaction ID to participate.</p>
+    <div id="msg"></div>
+    <form id="ldForm">
+      <label>Full Name</label><input id="name" required>
+      <label>Email</label><input type="email" id="email" required>
+      <label>Phone</label><input id="phone" required>
+      <label>Transaction ID</label><input id="transactionId" required>
+      <button class="cta" type="submit">Submit Entry</button>
+    </form>
+    <p class="small">Only logged-in users can submit. Need an account? <a href="register.html">Register</a></p>
+  </div>
+
+<script>
+requireAuth();
+document.getElementById('ldForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const body = { name:name.value, email:email.value, phone:phone.value, transactionId:transactionId.value };
+  const {res, data} = await api('/api/luckydraw/enter', {method:'POST', body:JSON.stringify(body)});
+  if(res.ok){ msg.className='msg'; msg.textContent='Entry submitted successfully!'; e.target.reset(); }
+  else { msg.className='err'; msg.textContent=data.msg||'Submission failed'; }
+});
+</script>
+</body>
+</html>
