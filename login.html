@@ -5,26 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login • SV Realty Solutions</title>
   <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .social-login {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .social-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: white;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    .social-btn:hover {
+      background: #f5f5f5;
+    }
+    .social-btn.google {
+      border-color: #db4437;
+      color: #db4437;
+    }
+    .social-btn.github {
+      border-color: #333;
+      color: #333;
+    }
+    .social-btn.gitlab {
+      border-color: #fc6d26;
+      color: #fc6d26;
+    }
+    .divider {
+      margin: 20px 0;
+      text-align: center;
+      position: relative;
+    }
+    .divider:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #ddd;
+    }
+    .divider span {
+      background: white;
+      padding: 0 15px;
+      position: relative;
+      color: #666;
+    }
+  </style>
 </head>
 <body class="auth">
   <div class="card">
-    <h2>Login</h2>
+    <h2>Login to SV Realty Solutions</h2>
     <div id="msg"></div>
     
-    <!-- Netlify Identity Login Widget -->
-    <button onclick="netlifyIdentity.open()">Login / Register</button>
+    <!-- Social Login Buttons -->
+    <div class="social-login">
+      <button class="social-btn google" onclick="loginWithProvider('google')">
+        Continue with Google
+      </button>
+      <button class="social-btn github" onclick="loginWithProvider('github')">
+        Continue with GitHub
+      </button>
+      <button class="social-btn gitlab" onclick="loginWithProvider('gitlab')">
+        Continue with GitLab
+      </button>
+    </div>
     
-    <p class="small">No account? Use the popup above to register.</p>
+    <div class="divider">
+      <span>OR</span>
+    </div>
+    
+    <!-- Netlify Identity Login Widget -->
+    <button onclick="netlifyIdentity.open()" style="width:100%; padding:12px; margin-bottom:10px;">
+      Login / Register with Email
+    </button>
+    
+    <p class="small">No account? You can register using any method above.</p>
   </div>
 
   <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
+    // Initialize Netlify Identity
     if (window.netlifyIdentity) {
+      netlifyIdentity.init();
+      
+      // Function to login with external providers
+      function loginWithProvider(provider) {
+        netlifyIdentity.open(provider);
+      }
+
       // When user logs in
       netlifyIdentity.on('login', user => {
         console.log('Logged in:', user);
-        window.location.href = 'ApplyPage.html';  // ✅ Redirect after login
+        document.getElementById('msg').innerHTML = `
+          <div style="background:#d4edda; color:#155724; padding:10px; border-radius:5px; margin:10px 0;">
+            Login successful! Redirecting...
+          </div>
+        `;
+        
+        // Redirect after short delay
+        setTimeout(() => {
+          window.location.href = 'ApplyPage.html';
+        }, 1000);
       });
 
       // When user logs out
@@ -32,8 +121,25 @@
         console.log('Logged out');
         window.location.href = 'login.html';
       });
+
+      // Check if user is already logged in
+      const currentUser = netlifyIdentity.currentUser();
+      if (currentUser) {
+        window.location.href = 'ApplyPage.html';
+      }
+
+      // Handle errors
+      netlifyIdentity.on('error', err => {
+        console.error('Auth error:', err);
+        document.getElementById('msg').innerHTML = `
+          <div style="background:#f8d7da; color:#721c24; padding:10px; border-radius:5px; margin:10px 0;">
+            Login failed: ${err.message || 'Please try again'}
+          </div>
+        `;
+      });
+    } else {
+      console.error('Netlify Identity not loaded');
     }
   </script>
 </body>
 </html>
-
