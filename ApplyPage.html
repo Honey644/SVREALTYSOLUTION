@@ -102,6 +102,21 @@
     <button>LOG OUT</button>
   </div>
 
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    netlifyIdentity.on('logout', () => {
+      window.location.href = 'login.html';
+    });
+  }
+
+  // Attach logout button
+  document.querySelector('.navbar button').addEventListener('click', ()=>{
+    netlifyIdentity.logout();
+  });
+</script>
+
+
   <div class="container">
     <h1>Welcome to the Apply Page</h1>
     <p>Start your application process here.</p>
