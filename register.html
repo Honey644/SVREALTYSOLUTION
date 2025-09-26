@@ -5,31 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Register • SV Realty Solutions</title>
   <link rel="stylesheet" href="assets/styles.css">
-  <script defer src="assets/script.js"></script>
 </head>
 <body class="auth">
   <div class="card">
     <h2>Create Account</h2>
     <div id="msg"></div>
-    <form id="registerForm">
-      <label>Full Name</label>
-      <input type="text" id="name" required>
-      <label>Email</label>
-      <input type="email" id="email" required>
-      <label>Password</label>
-      <input type="password" id="password" required>
-      <button class="cta" type="submit">Register</button>
-    </form>
-    <p class="small">Already have an account? <a href="login.html">Login</a></p>
+
+    <!-- Netlify Identity Register -->
+    <button class="cta" onclick="netlifyIdentity.open('signup')">Register with Email</button>
+
+    <p class="small">Already have an account? 
+      <a href="login.html">Login</a>
+    </p>
   </div>
-<script>
-document.getElementById('registerForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const body = {name:name.value, email:email.value, password:password.value};
-  const {res, data} = await api('/api/auth/register',{method:'POST', body:JSON.stringify(body)});
-  if(res.ok){ msg.className='msg'; msg.textContent='Registered! Please login.'; setTimeout(()=>location.href='login.html',800); }
-  else{ msg.className='err'; msg.textContent=data.msg||'Registration failed'; }
-})
-</script>
+
+  <!-- Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      // When a new user signs up
+      netlifyIdentity.on('signup', user => {
+        console.log('User registered:', user);
+        const msg = document.getElementById('msg');
+        msg.className = 'msg';
+        msg.textContent = 'Registered successfully! Redirecting to login...';
+        
+        setTimeout(() => {
+          window.location.href = 'login.html'; // ✅ go to login after signup
+        }, 1200);
+      });
+    }
+  </script>
 </body>
 </html>
