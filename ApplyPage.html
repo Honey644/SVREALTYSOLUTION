@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #000;
+    }
+    .navbar {
+      background-color: #065c4c;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .navbar a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .navbar button {
+      background: #fff;
+      color: #065c4c;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    .card {
+      background-color: #0a0433;
+      color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+      flex: 1 1 280px;
+      max-width: 350px;
+    }
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    .card p {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .card button {
+      background-color: #ffb400;
+      border: none;
+      padding: 10px 20px;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .card button:hover {
+      background-color: #e09e00;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        text-align: center;
+      }
+      .navbar a {
+        display: block;
+        margin: 8px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-links">
+      <a href="#">Apply</a>
+      <a href="#">MY PROFILE</a>
+      <a href="#">MY APPLICATION</a>
+      <a href="#">OwnerShip</a>
+      <a href="#">Lucky Draw Result</a>
+    </div>
+    <button>LOG OUT</button>
+  </div>
+
+  <div class="container">
+    <h1>Welcome to the Apply Page</h1>
+    <p>Start your application process here.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h2>Direct Apply</h2>
+        <p>Book Instantly - "Book your Plot, Shop, Farmhouse, or Villa instantly by paying a minimum booking amount — with confirmed instant allotment!"</p>
+        <button>Direct Apply</button>
+      </div>
+
+      <div class="card">
+        <h2>Scheme Apply</h2>
+        <p>Apply via Scheme - "Apply through subsidized schemes. If given a chance and if you're lucky enough, you might get an allotment at subsidized rates, along with a free gift."</p>
+        <button>Scheme Apply</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
