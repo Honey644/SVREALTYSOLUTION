@@ -5,34 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login • SV Realty Solutions</title>
   <link rel="stylesheet" href="assets/styles.css">
-  <script defer src="assets/script.js"></script>
 </head>
 <body class="auth">
   <div class="card">
     <h2>Login</h2>
     <div id="msg"></div>
-    <form id="loginForm">
-      <label>Email</label>
-      <input type="email" id="email" required>
-      <label>Password</label>
-      <input type="password" id="password" required>
-      <button class="cta" type="submit">Login</button>
-    </form>
-    <p class="small">No account? <a href="register.html">Register</a></p>
+    
+    <!-- Netlify Identity Login Widget -->
+    <button onclick="netlifyIdentity.open()">Login / Register</button>
+    
+    <p class="small">No account? Use the popup above to register.</p>
   </div>
-<script>
-document.getElementById('loginForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const body = {email:email.value, password:password.value};
-  const {res, data} = await api('/api/auth/login',{method:'POST', body:JSON.stringify(body)});
-  if(res.ok){
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    window.location.href='dashboard.html';
-  }else{
-    msg.className='err'; msg.textContent=data.msg||'Login failed';
-  }
-})
-</script>
+
+  <!-- Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      // When user logs in
+      netlifyIdentity.on('login', user => {
+        console.log('Logged in:', user);
+        window.location.href = 'ApplyPage.html';  // ✅ Redirect after login
+      });
+
+      // When user logs out
+      netlifyIdentity.on('logout', () => {
+        console.log('Logged out');
+        window.location.href = 'login.html';
+      });
+    }
+  </script>
 </body>
 </html>
+
